@@ -20,7 +20,7 @@ RUN npm install -g nodemon
 # RUN npm run build
 
 # Expose port 5000 to the outside world
-EXPOSE 5010
+EXPOSE 5000
 
 # DEV: Use nodemon for development
 CMD ["npm", "run", "dev"]

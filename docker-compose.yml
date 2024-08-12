@@ -2,7 +2,7 @@ services:
   frontend:
     build: ./frontend
     ports:
-      - '3010:3000'
+      - '3000:3000'
     depends_on:
       - backend
     volumes:
@@ -13,7 +13,7 @@ services:
   backend:
     build: ./backend
     ports:
-      - '5010:5000'
+      - '5001:5000'
     volumes:
       - ./backend:/app
     command: npm run dev

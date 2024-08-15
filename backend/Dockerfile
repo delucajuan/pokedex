@@ -26,4 +26,4 @@ EXPOSE 5000
 CMD ["npm", "run", "dev"]
 
 # Prod: Start the Express server
-# CMD ["node", "dist/index.js"]
+# CMD ["node", "dist/server.js"]

@@ -1,4 +1,4 @@
-import { ValidationError } from 'express-validator';
+import { ValidationError } from "express-validator";
 
 export type HttpError = Error & {
   status?: number;
@@ -21,7 +21,7 @@ export type PokeApiParams = {
   type?: string;
 };
 
-export type PokemonCache = {
+export type PokemonUrlList = {
   name: string;
   url: string;
 }[];
@@ -77,7 +77,7 @@ export type PokeApiPokemon = {
   species: Resource;
   sprites: Sprites;
   stats: Stat[];
-  types: Type[];
+  types: PokemonType[];
   past_types: PastType[];
   cries: Cries;
 };
@@ -135,7 +135,7 @@ export type Sprites = {
 export type OtherSprites = {
   dream_world: Sprite;
   home: HomeSprites;
-  'official-artwork': Sprite;
+  "official-artwork": Sprite;
   showdown: Sprite;
 };
 
@@ -152,14 +152,14 @@ export type HomeSprites = {
 };
 
 export type Versions = {
-  'generation-i': GenerationSprites;
-  'generation-ii': GenerationSprites;
-  'generation-iii': GenerationSprites;
-  'generation-iv': GenerationSprites;
-  'generation-v': GenerationSprites;
-  'generation-vi': GenerationSprites;
-  'generation-vii': GenerationSprites;
-  'generation-viii': GenerationSprites;
+  "generation-i": GenerationSprites;
+  "generation-ii": GenerationSprites;
+  "generation-iii": GenerationSprites;
+  "generation-iv": GenerationSprites;
+  "generation-v": GenerationSprites;
+  "generation-vi": GenerationSprites;
+  "generation-vii": GenerationSprites;
+  "generation-viii": GenerationSprites;
 };
 
 export type GenerationSprites = {
@@ -177,14 +177,14 @@ export type Stat = {
   stat: Resource;
 };
 
-export type Type = {
+export type PokemonType = {
   slot: number;
   type: Resource;
 };
 
 export type PastType = {
   generation: Resource;
-  types: Type[];
+  types: PokemonType[];
 };
 
 export type Cries = {

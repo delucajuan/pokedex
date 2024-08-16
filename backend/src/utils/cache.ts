@@ -1,30 +1,29 @@
-import axios from 'axios';
-import { PokeApiPokemonList, PokemonCache } from '../types/types';
+import { PokeApiPokemonList, PokemonUrlList } from "../types/types";
+import axiosInstance from "../config/axiosConfig";
 
-const pokeApiUrl = process.env.POKEAPI_URL;
-let pokemonCache: PokemonCache = [];
+let pokemonCache: PokemonUrlList = [];
 
 // Cache for storing Pokemon names and urls
 const loadPokemonCache = async () => {
   try {
-    let url = `${pokeApiUrl}/pokemon?limit=100&offset=0`;
+    let url = `/pokemon?limit=100&offset=0`;
 
     let nextUrl = url;
-    const allPokemon: PokemonCache = [];
+    const allPokemon: PokemonUrlList = [];
 
     while (nextUrl) {
-      const response = await axios.get<PokeApiPokemonList>(nextUrl);
-      const pokemonPage = response.data.results.map((pokemon) => ({
+      const response = await axiosInstance.get<PokeApiPokemonList>(nextUrl);
+      const pageData = response.data.results.map((pokemon) => ({
         name: pokemon.name,
         url: pokemon.url,
       }));
-      allPokemon.push(...pokemonPage);
-      nextUrl = response.data.next || '';
+      allPokemon.push(...pageData);
+      nextUrl = response.data.next || "";
     }
     pokemonCache = allPokemon;
-    console.log('💾 | Cache loaded:', pokemonCache.length, 'Pokémon');
+    console.log("💾 | Cache loaded:", pokemonCache.length, "Pokémon");
   } catch (error) {
-    console.error('Failed to load Pokémon cache', error);
+    console.error("Failed to load Pokémon cache", error);
   }
 };
 

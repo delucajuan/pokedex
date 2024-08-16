@@ -19,8 +19,8 @@ RUN npm install -g nodemon
 # PROD: Build the TypeScript code
 # RUN npm run build
 
-# Expose port 5000 to the outside world
-EXPOSE 5000
+# Expose port 5001 to the outside world
+EXPOSE 5001
 
 # DEV: Use nodemon for development
 CMD ["npm", "run", "dev"]

@@ -9,13 +9,16 @@ services:
       - ./frontend:/app
     environment:
       - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://localhost:5001/api
 
   backend:
     build: ./backend
     ports:
-      - '5001:5000'
+      - '5001:5001'
     volumes:
       - ./backend:/app
     command: npm run dev
     environment:
       - NODE_ENV=development
+      - PORT=5001
+      - POKEAPI_URL=https://pokeapi.co/api/v2

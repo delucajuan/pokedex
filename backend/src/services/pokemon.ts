@@ -4,11 +4,11 @@ import {
   PokeApiPokemon,
   PokeApiTypes,
   PokemonUrlList,
-} from "../types/types";
-import { formatPokemonData } from "../utils/formatPokemonData";
-import { handleAxiosError } from "../utils/errorHandler";
-import axiosInstance from "../config/axiosConfig";
-import { getPokemonCache, loadPokemonCache } from "../utils/cache";
+} from '../types/types';
+import { formatPokemonData } from '../utils/formatPokemonData';
+import { handleAxiosError } from '../utils/errorHandler';
+import axiosInstance from '../config/axiosConfig';
+import { getPokemonCache, loadPokemonCache } from '../utils/cache';
 
 const getAllpokemon = async ({ page, limit, type, name }: GetAllPokemonProps) => {
   const offset = limit !== undefined ? (page - 1) * limit : 0;
@@ -53,10 +53,11 @@ const getAllpokemon = async ({ page, limit, type, name }: GetAllPokemonProps) =>
         }
 
         // Filter Pokémon by name using a regex
-        const nameRegex = new RegExp(name.toLowerCase(), "i");
+        const nameRegex = new RegExp(name.toLowerCase(), 'i');
         filteredPokemon = filteredPokemon?.filter((pokemon) => nameRegex.test(pokemon.name));
         total = filteredPokemon.length;
       }
+      filteredPokemon.splice(offset, offset + limit);
     }
     if (!filteredPokemon.length) {
       return { data: [], total };
@@ -64,9 +65,9 @@ const getAllpokemon = async ({ page, limit, type, name }: GetAllPokemonProps) =>
 
     // Get data for filtered and paginated pokemon
     const pokemonData = await Promise.all(
-      filteredPokemon
-        .slice(offset, offset + limit)
-        .map(async (pokemon) => (await axiosInstance.get<PokeApiPokemon>(pokemon.url)).data)
+      filteredPokemon.map(
+        async (pokemon) => (await axiosInstance.get<PokeApiPokemon>(pokemon.url)).data
+      )
     );
 
     const formattedData = formatPokemonData(pokemonData);

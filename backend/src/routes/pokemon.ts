@@ -1,11 +1,12 @@
-import { Router, Request, Response } from "express";
-import apicache from "apicache";
+import { Router, Request, Response } from 'express';
+import apicache from 'apicache';
 import {
   handleValidationErrors,
   validateAllowedParams,
-  validatePokemonQuery,
-} from "../middlewares/validator";
-import { getAllPokemon } from "../controllers/pokemon";
+  validatePokemon,
+  validatePokemonSearch,
+} from '../middlewares/validator';
+import pokemonController from '../controllers/pokemon';
 
 const router = Router();
 const cache = apicache.options({
@@ -14,18 +15,28 @@ const cache = apicache.options({
   },
 }).middleware;
 
-// Get all pokemon
+// Get all Pokémon
 router.get(
-  "/",
-  cache("60 minutes"),
-  validateAllowedParams(["limit", "page", "type", "name"]),
-  validatePokemonQuery,
+  '/',
+  cache('60 minutes'),
+  validateAllowedParams(['limit', 'page', 'type', 'name']),
+  validatePokemon,
   handleValidationErrors,
-  getAllPokemon
+  pokemonController.getAllPokemon
 );
 
-// TODO: Get pokemon by id
-router.get("/:id", (req: Request, res: Response) => {
+// Get Pokémon names
+router.get(
+  '/names',
+  cache('60 minutes'),
+  validateAllowedParams(['search', 'limit']),
+  validatePokemonSearch,
+  handleValidationErrors,
+  pokemonController.getPokemonNames
+);
+
+// TODO: Get Pokémon by id
+router.get('/:id', (req: Request, res: Response) => {
   const { id } = req.params;
   res.send(`Get Pokémon with ID: ${id}`);
 });

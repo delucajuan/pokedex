@@ -1,12 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { default as pokemonService } from '../services/pokemon';
+import pokemonService from '../services/pokemon';
 import { HttpError } from '../types/types';
 
-export const getAllPokemon = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const getAllPokemon = async (req: Request, res: Response, next: NextFunction) => {
   const page = parseInt(req.query.page as string, 10) || 1;
   const limit = parseInt(req.query.limit as string, 10) || 10;
   const name = req.query.name as string | undefined;
@@ -20,8 +16,7 @@ export const getAllPokemon = async (
       type,
     })) || { data: [], total: 0 };
 
-    const pages =
-      pokemonData.total > 0 ? Math.ceil(pokemonData.total / limit) : 1;
+    const pages = pokemonData.total > 0 ? Math.ceil(pokemonData.total / limit) : 1;
 
     // Page is greater than total pages
     if (page > pages) {
@@ -47,3 +42,22 @@ export const getAllPokemon = async (
     next(err);
   }
 };
+
+const getPokemonNames = async (req: Request, res: Response, next: NextFunction) => {
+  const searchValue = req.query.search as string;
+  const limit = parseInt(req.query.limit as string, 10) || 10;
+  try {
+    const pokemonData =
+      (await pokemonService.getPokemonNames({
+        searchValue,
+        limit,
+      })) || [];
+
+    // Fetch and return the formatted Pokémon data
+    res.json(pokemonData);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export default { getAllPokemon, getPokemonNames };

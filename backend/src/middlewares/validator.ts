@@ -10,9 +10,7 @@ export const validateAllowedParams = (allowedParams: string[]) => {
 
     if (invalidParams.length > 0) {
       const error: HttpError = new Error(
-        `Invalid parameters: ${invalidParams.join(
-          ', '
-        )}. Only ${allowedParams.join(', ')} are allowed.`
+        `Invalid parameters: ${invalidParams.join(', ')}. Only ${allowedParams.join(', ')} allowed.`
       );
       error.status = 400;
       return next(error);
@@ -21,33 +19,27 @@ export const validateAllowedParams = (allowedParams: string[]) => {
   };
 };
 
-// Validation for query values
-export const validatePokemonQuery: ValidationChain[] = [
+// Validation for /pokemon
+export const validatePokemon: ValidationChain[] = [
   check('limit')
     .optional()
     .isInt({ min: 1, max: 100 })
     .withMessage('Limit must be an integer between 1 and 100'),
-  check('page')
-    .optional()
-    .isInt({ min: 1 })
-    .withMessage('Page must be a positive integer'),
-  check('name')
-    .optional()
-    .notEmpty()
-    .isString()
-    .withMessage('Name must be a string'),
-  check('type')
-    .optional()
-    .notEmpty()
-    .isString()
-    .withMessage('Type must be a string'),
+  check('page').optional().isInt({ min: 1 }).withMessage('Page must be a positive integer'),
+  check('name').optional().notEmpty().withMessage('Name must not be empty'),
+  check('type').optional().notEmpty().withMessage('Type must not be empty'),
 ];
 
-export const handleValidationErrors = (
-  req: Request,
-  _res: Response,
-  next: NextFunction
-) => {
+// Validation for /pokemon/search
+export const validatePokemonSearch: ValidationChain[] = [
+  check('search').notEmpty().withMessage('Search is required'),
+  check('limit')
+    .optional()
+    .isInt({ min: 1, max: 100 })
+    .withMessage('Limit must be an integer between 1 and 100'),
+];
+
+export const handleValidationErrors = (req: Request, _res: Response, next: NextFunction) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const error: HttpError = new Error('Invalid parameters');

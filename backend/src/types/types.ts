@@ -1,4 +1,4 @@
-import { ValidationError } from "express-validator";
+import { ValidationError } from 'express-validator';
 
 export type HttpError = Error & {
   status?: number;
@@ -135,7 +135,7 @@ export type Sprites = {
 export type OtherSprites = {
   dream_world: Sprite;
   home: HomeSprites;
-  "official-artwork": Sprite;
+  'official-artwork': Sprite;
   showdown: Sprite;
 };
 
@@ -152,14 +152,14 @@ export type HomeSprites = {
 };
 
 export type Versions = {
-  "generation-i": GenerationSprites;
-  "generation-ii": GenerationSprites;
-  "generation-iii": GenerationSprites;
-  "generation-iv": GenerationSprites;
-  "generation-v": GenerationSprites;
-  "generation-vi": GenerationSprites;
-  "generation-vii": GenerationSprites;
-  "generation-viii": GenerationSprites;
+  'generation-i': GenerationSprites;
+  'generation-ii': GenerationSprites;
+  'generation-iii': GenerationSprites;
+  'generation-iv': GenerationSprites;
+  'generation-v': GenerationSprites;
+  'generation-vi': GenerationSprites;
+  'generation-vii': GenerationSprites;
+  'generation-viii': GenerationSprites;
 };
 
 export type GenerationSprites = {
@@ -251,4 +251,14 @@ export type PokeApiTypes = {
   names: Name[];
   pokemon: PokemonSlot[];
   moves: Move[];
+};
+
+export type PokemonList = {
+  name: string;
+  url?: string;
+}[];
+
+export type getPokemonNamesProps = {
+  searchValue: string;
+  limit: number;
 };

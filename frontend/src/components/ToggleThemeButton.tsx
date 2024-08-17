@@ -5,14 +5,10 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import { useThemeContext } from '@/context/ThemeContext';
 
-type ToggleThemeButtonProps = {
-  toggleTheme: () => void;
-};
-
 function ToggleThemeButton() {
   const theme = useTheme();
   const darkMode = theme.palette.mode === 'dark';
-  const { mode, toggleTheme } = useThemeContext();
+  const { toggleTheme } = useThemeContext();
 
   return (
     <IconButton onClick={toggleTheme} color="inherit">

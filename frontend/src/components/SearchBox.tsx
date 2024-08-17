@@ -1,8 +1,7 @@
 'use client';
-import React, { useEffect, useState } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
-import { InputBase, TextField } from '@mui/material';
+import { InputBase } from '@mui/material';
 
 // Styled search component
 const Search = styled('div')(({ theme }) => ({
@@ -43,7 +42,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function SearchBox() {
-  const [searchValue, setSearchValue] = useState(''); // Search input value
+  // const [searchValue, setSearchValue] = useState(''); // Search input value
 
   return (
     <Search>
@@ -51,11 +50,11 @@ function SearchBox() {
         <SearchIcon />
       </SearchIconWrapper>
       <StyledInputBase
-        placeholder="Search…"
+        placeholder='Search…'
         inputProps={{ 'aria-label': 'search' }}
       />
     </Search>
   );
 }
 
-export { SearchBox };
+export default SearchBox;

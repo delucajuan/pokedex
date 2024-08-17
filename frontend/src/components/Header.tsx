@@ -1,7 +1,7 @@
-import { AppBar, Box, Button, Container, Toolbar } from '@mui/material';
+import { AppBar, Box, Container, Toolbar } from '@mui/material';
 import Link from 'next/link';
 import ToggleThemeButton from './ToggleThemeButton';
-import { SearchBox } from './SearchBox';
+import SearchBox from './SearchBox';
 
 function Header() {
   return (
@@ -19,9 +19,7 @@ function Header() {
                 />
               </Link>
             </Box>
-            <Box
-              sx={{ display: 'flex', flexGrow: 1, justifyContent: 'center' }}
-            >
+            <Box sx={{ display: 'flex', flexGrow: 1, justifyContent: 'center' }}>
               <SearchBox />
             </Box>
             <Box>

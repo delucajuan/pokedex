@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
-import { ThemeContextProvider } from '../context/ThemeContext';
 import { Container, CssBaseline } from '@mui/material';
-import Header from '@/components/Header';
+import { ThemeContextProvider } from '../context/ThemeContext';
+import Header from '../components/Header';
 
 export const metadata: Metadata = {
   title: 'Pokédex',
@@ -23,7 +23,9 @@ export default function RootLayout({
           <ThemeContextProvider>
             <CssBaseline>
               <Header />
-              <Container maxWidth="lg">{children}</Container>
+              <Container maxWidth="lg" sx={{ paddingY: 2 }}>
+                {children}
+              </Container>
             </CssBaseline>
           </ThemeContextProvider>
         </AppRouterCacheProvider>

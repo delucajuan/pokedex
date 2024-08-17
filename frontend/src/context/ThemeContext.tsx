@@ -11,7 +11,6 @@ import React, {
 import { PaletteMode, useMediaQuery } from '@mui/material';
 import { getTheme } from '../theme';
 import { ThemeProvider } from '@mui/material/styles';
-
 interface ThemeContextType {
   mode: PaletteMode;
   toggleTheme: () => void;

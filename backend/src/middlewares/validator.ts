@@ -10,7 +10,9 @@ export const validateAllowedParams = (allowedParams: string[]) => {
 
     if (invalidParams.length > 0) {
       const error: HttpError = new Error(
-        `Invalid parameters: ${invalidParams.join(', ')}. Only ${allowedParams.join(', ')} allowed.`
+        `Invalid parameters: ${invalidParams.join(', ')}. Only ${allowedParams.join(
+          ', '
+        )} allowed.`
       );
       error.status = 400;
       return next(error);

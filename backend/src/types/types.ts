@@ -258,6 +258,11 @@ export type PokemonList = {
   url?: string;
 }[];
 
+export type TypesList = {
+  name: string;
+  url: string;
+}[];
+
 export type getPokemonNamesProps = {
   searchValue: string;
   limit: number;

@@ -1,4 +1,4 @@
-import { PokeApiPokemon, Pokemon, PokemonList } from '../types/types';
+import { PokeApiPokemon, Pokemon, PokemonList, TypesList } from '../types/types';
 
 const formatPokemonData = (pokemonDetails: PokeApiPokemon[]): Pokemon[] => {
   return pokemonDetails.map((pokemon) => ({
@@ -20,4 +20,8 @@ const formatPokemonNames = (pokemonList: PokemonList) => {
   return pokemonList.map((pokemon) => pokemon.name.replace(/-/g, ' '));
 };
 
-export { formatPokemonData, formatPokemonNames };
+const formatPokemonTypes = (typesList: TypesList) => {
+  return typesList.map((type) => type.name.replace(/-/g, ' '));
+};
+
+export { formatPokemonData, formatPokemonNames, formatPokemonTypes };

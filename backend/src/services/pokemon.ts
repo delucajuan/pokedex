@@ -6,7 +6,11 @@ import {
   PokemonUrlList,
   getPokemonNamesProps,
 } from '../types/types';
-import { formatPokemonData, formatPokemonNames } from '../utils/formatters';
+import {
+  formatPokemonData,
+  formatPokemonNames,
+  formatPokemonTypes,
+} from '../utils/formatters';
 import { handleAxiosError } from '../utils/errorHandler';
 import axiosInstance from '../config/axiosConfig';
 import { getPokemonCache, loadPokemonCache } from '../utils/cache';
@@ -28,7 +32,8 @@ const getAllpokemon = async ({ page, limit, type, name }: GetAllPokemonProps) =>
     } else {
       // Filter by type
       if (type) {
-        const pokemonByType = (await axiosInstance.get<PokeApiTypes>(`/type/${type}`)).data.pokemon;
+        const pokemonByType = (await axiosInstance.get<PokeApiTypes>(`/type/${type}`)).data
+          .pokemon;
 
         if (!pokemonByType?.length) {
           return { data: [], total };
@@ -58,7 +63,10 @@ const getAllpokemon = async ({ page, limit, type, name }: GetAllPokemonProps) =>
         }
 
         // Filter and sort Pokémon by relevance
-        filteredPokemon = filterAndSortPokemon(filteredPokemon, formattedName) as PokemonUrlList;
+        filteredPokemon = filterAndSortPokemon(
+          filteredPokemon,
+          formattedName
+        ) as PokemonUrlList;
         total = filteredPokemon.length;
       }
       // Get current page data
@@ -88,9 +96,19 @@ const getPokemonNames = async ({ searchValue, limit }: getPokemonNamesProps) => 
     await loadPokemonCache();
     pokemonCache = getPokemonCache();
   }
+  // Transform spaces in the search term to hyphens
+  const formattedSearchValue = searchValue.toLowerCase().replace(/\s+/g, '-');
   // Filter and sort Pokémon by relevance
-  const filteredNames = filterAndSortPokemon(pokemonCache, searchValue).slice(0, limit);
+  const filteredNames = filterAndSortPokemon(pokemonCache, formattedSearchValue).slice(
+    0,
+    limit
+  );
   return formatPokemonNames(filteredNames);
 };
 
-export default { getAllpokemon, getPokemonNames };
+const getPokemonTypes = async () => {
+  const typesData = (await axiosInstance.get<PokeApiPokemonList>(`/type?limit=100`)).data;
+  return formatPokemonTypes(typesData.results);
+};
+
+export default { getAllpokemon, getPokemonNames, getPokemonTypes };

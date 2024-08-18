@@ -18,7 +18,7 @@ const cache = apicache.options({
 // Get all Pokémon
 router.get(
   '/',
-  cache('60 minutes'),
+  cache('12 hours'),
   validateAllowedParams(['limit', 'page', 'type', 'name']),
   validatePokemon,
   handleValidationErrors,
@@ -28,17 +28,20 @@ router.get(
 // Get Pokémon names
 router.get(
   '/names',
-  cache('60 minutes'),
+  cache('12 hours'),
   validateAllowedParams(['search', 'limit']),
   validatePokemonSearch,
   handleValidationErrors,
   pokemonController.getPokemonNames
 );
 
+// Get Pokémon types
+router.get('/types', cache('12 hours'), handleValidationErrors, pokemonController.getPokemonTypes);
+
 // TODO: Get Pokémon by id
-router.get('/:id', (req: Request, res: Response) => {
-  const { id } = req.params;
-  res.send(`Get Pokémon with ID: ${id}`);
+router.get('/name/:name', (req: Request, res: Response) => {
+  const { name } = req.params;
+  res.send(`Get Pokémon with ID: ${name}`);
 });
 
 export default router;

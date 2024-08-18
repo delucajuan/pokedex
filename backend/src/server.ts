@@ -20,7 +20,7 @@ app.use(cors());
 loadPokemonCache();
 
 // Set an interval to refresh the cache
-setInterval(loadPokemonCache, 60 * 60 * 1000); // 1 hour
+setInterval(loadPokemonCache, 12 * 60 * 60 * 1000); // 12 hours
 
 app.use('/api', routes);
 

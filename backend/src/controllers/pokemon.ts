@@ -60,4 +60,14 @@ const getPokemonNames = async (req: Request, res: Response, next: NextFunction) 
   }
 };
 
-export default { getAllPokemon, getPokemonNames };
+const getPokemonTypes = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const pokemonTypes = await pokemonService.getPokemonTypes();
+
+    res.json(pokemonTypes);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export default { getAllPokemon, getPokemonNames, getPokemonTypes };

@@ -1,3 +1,5 @@
+import { PaletteMode } from '@mui/material';
+
 export type PokemonType =
   | 'normal'
   | 'fighting'
@@ -41,17 +43,26 @@ export type PokemonDetail = Pokemon & {
   }[];
 };
 
+export type Metadata = {
+  currentPage: number;
+  pageSize: number;
+  pages: number;
+  total: number;
+};
+
 export type AllPokemonResponse = {
-  metadata: {
-    currentPage: number;
-    pageSize: number;
-    pages: number;
-    total: number;
-  };
+  metadata: Metadata;
   data: Pokemon[];
 };
 
 export type CustomPaginationProps = {
   totalPages: number;
   currentPage: number;
+};
+
+export type PokemonNamesResponse = string[];
+
+export type ThemeContextType = {
+  mode: PaletteMode;
+  toggleTheme: () => void;
 };

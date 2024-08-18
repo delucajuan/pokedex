@@ -1,7 +1,8 @@
-import { AppBar, Box, Container, Toolbar } from '@mui/material';
+import { AppBar, Box, Container, Stack, Toolbar } from '@mui/material';
 import Link from 'next/link';
 import ToggleThemeButton from './ToggleThemeButton';
 import SearchBox from './SearchBox';
+import TypesMenu from './TypesMenu';
 
 function Header() {
   return (
@@ -15,16 +16,17 @@ function Header() {
                   component="img"
                   src="/images/logo.png"
                   alt="Pokémon Logo"
-                  sx={{ height: { xs: '40px', sm: '60px' }, mr: 2 }}
+                  sx={{ height: { xs: '40px', sm: '60px' } }}
                 />
               </Link>
             </Box>
-            <Box sx={{ display: 'flex', flexGrow: 1, justifyContent: 'center' }}>
+            <Box sx={{ display: 'flex', flexGrow: 1, justifyContent: 'center', marginX: 2 }}>
               <SearchBox />
             </Box>
-            <Box>
+            <Stack direction="row" spacing={1} display="flex" alignItems="center">
+              <TypesMenu />
               <ToggleThemeButton />
-            </Box>
+            </Stack>
           </Toolbar>
         </Container>
       </AppBar>

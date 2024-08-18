@@ -19,7 +19,7 @@ import PokeballIcon from './PokeballIcon';
 
 const PokemonCard = ({ pokemon }: { pokemon: Pokemon }) => {
   return (
-    <Grid item key={pokemon.name}>
+    <Grid item>
       <Card variant="elevation" sx={{ width: 276, borderRadius: 5 }}>
         <CardActionArea sx={{ padding: 2, height: 490 }}>
           <CardMedia
@@ -68,7 +68,6 @@ const PokemonCard = ({ pokemon }: { pokemon: Pokemon }) => {
                     {index !== 0 && <Divider />}
                     <Stack
                       direction="row"
-                      key={stat.name}
                       display="flex"
                       justifyContent="space-between"
                     >
@@ -78,8 +77,6 @@ const PokemonCard = ({ pokemon }: { pokemon: Pokemon }) => {
                       <Rating
                         name="read-only"
                         value={(stat.base / 200) * 5}
-                        precision={1}
-                        size="small"
                         readOnly
                         icon={<PokeballIcon fontSize="1.3rem" />}
                         emptyIcon={

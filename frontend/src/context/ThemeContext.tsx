@@ -1,20 +1,9 @@
 'use client';
-
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useMemo,
-  ReactNode,
-  useEffect,
-} from 'react';
-import { PaletteMode, useMediaQuery } from '@mui/material';
+import React, { createContext, useContext, useState, useMemo, ReactNode, useEffect } from 'react';
+import { useMediaQuery } from '@mui/material';
 import { getTheme } from '../theme';
 import { ThemeProvider } from '@mui/material/styles';
-interface ThemeContextType {
-  mode: PaletteMode;
-  toggleTheme: () => void;
-}
+import { ThemeContextType } from '@/types/types';
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
@@ -29,25 +18,48 @@ export const useThemeContext = (): ThemeContextType => {
 export const ThemeContextProvider = ({ children }: { children: ReactNode }) => {
   // Get user dark mode preference
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  // Set color mode
-  const [mode, setMode] = useState<'light' | 'dark'>(
-    prefersDarkMode ? 'dark' : 'light'
-  );
-  const theme = useMemo(() => getTheme(mode), [mode]);
 
-  // Toggle color mode
+  // Check session storage for saved theme mode
+  const storedMode =
+    typeof window !== 'undefined'
+      ? (sessionStorage.getItem('themeMode') as 'light' | 'dark')
+      : null;
+  const [mode, setMode] = useState<'light' | 'dark' | undefined>(undefined);
+
+  // Set mode based on storedMode or prefersDarkMode after component mounts
+  useEffect(() => {
+    const initialMode = storedMode || (prefersDarkMode ? 'dark' : 'light');
+    setMode(initialMode);
+  }, [prefersDarkMode, storedMode]);
+
+  const theme = useMemo(() => (mode ? getTheme(mode) : undefined), [mode]);
+
+  // Toggle color mode and save to session storage
   const toggleTheme = () => {
-    setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+    setMode((prevMode) => {
+      const newMode = prevMode === 'light' ? 'dark' : 'light';
+      sessionStorage.setItem('themeMode', newMode);
+      return newMode;
+    });
   };
 
-  // Change color mode state when user preference change
+  // Synchronize mode with system preference, only if no user choice is stored
   useEffect(() => {
-    setMode(prefersDarkMode ? 'dark' : 'light');
-  }, [prefersDarkMode]);
+    if (!storedMode) {
+      setMode(prefersDarkMode ? 'dark' : 'light');
+    }
+  }, [prefersDarkMode, storedMode]);
+
+  // Prevent rendering until mode is determined
+  if (!mode || !theme) {
+    return null;
+  }
 
   return (
     <ThemeContext.Provider value={{ mode, toggleTheme }}>
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+      <ThemeProvider key={mode} theme={theme}>
+        {children}
+      </ThemeProvider>
     </ThemeContext.Provider>
   );
 };

@@ -60,9 +60,9 @@ export type CustomPaginationProps = {
   currentPage: number;
 };
 
-export type PokemonNamesResponse = string[];
-
 export type ThemeContextType = {
   mode: PaletteMode;
   toggleTheme: () => void;
 };
+
+export type TypesMenuOptions = PokemonType | 'all';

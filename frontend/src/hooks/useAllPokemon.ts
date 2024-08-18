@@ -8,15 +8,25 @@ const useAllPokemon = ({
   limit = 12,
   page = 1,
   name,
+  type,
 }: {
   limit?: number;
   page?: number;
   name?: string;
+  type?: string;
 }) => {
-  const url = `${API_URL}/pokemon?limit=${limit}&page=${page}${
-    name ? `&name=${encodeURIComponent(name)}` : ''
-  }`;
+  const params = new URLSearchParams();
+  params.append('limit', limit.toString());
+  params.append('page', page.toString());
 
+  if (name) {
+    params.append('name', name);
+  }
+  if (type) {
+    params.append('type', type);
+  }
+
+  const url = `${API_URL}/pokemon?${params.toString()}`;
   const { data, error, isLoading } = useSWR<AllPokemonResponse>(url, fetcher);
 
   return {

@@ -78,7 +78,7 @@ function SearchBox() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (searchValue.trim()) {
-      router.push(`/?name=${encodeURIComponent(searchValue)}`);
+      router.push(`/?name=${encodeURIComponent(searchValue.trim())}`);
     }
   };
 
@@ -112,6 +112,10 @@ function SearchBox() {
                   {params.InputProps.startAdornment}
                 </>
               ),
+            }}
+            inputProps={{
+              ...params.inputProps,
+              enterKeyHint: 'search',
             }}
             sx={{
               '& .MuiInputBase-root': {

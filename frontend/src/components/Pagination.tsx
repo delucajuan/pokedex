@@ -14,7 +14,7 @@ function CustomPagination({ totalPages, currentPage }: CustomPaginationProps) {
   return (
     <Pagination
       count={totalPages}
-      color="secondary"
+      color="primary"
       page={currentPage}
       onChange={handlePageChange}
       sx={{ padding: 2 }}

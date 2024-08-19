@@ -30,6 +30,7 @@ export type Pokemon = {
   name: string;
   image: string;
   types: string[];
+  order: number;
   stats: {
     name: string;
     base: number;
@@ -80,6 +81,7 @@ export type PokeApiPokemon = {
   types: PokemonType[];
   past_types: PastType[];
   cries: Cries;
+  abilitiesDetails: PokeApiAbility[];
 };
 
 export type Ability = {
@@ -266,4 +268,65 @@ export type TypesList = {
 export type getPokemonNamesProps = {
   searchValue: string;
   limit: number;
+};
+
+export type PokeApiAbility = {
+  effect_changes: {
+    effect_entries: {
+      effect: string;
+      language: {
+        name: string;
+        url: string;
+      };
+    }[];
+    version_group: {
+      name: string;
+      url: string;
+    };
+  }[];
+  effect_entries: {
+    effect: string;
+    language: {
+      name: string;
+      url: string;
+    };
+    short_effect: string;
+  }[];
+  flavor_text_entries: {
+    flavor_text: string;
+    language: {
+      name: string;
+      url: string;
+    };
+    version_group: {
+      name: string;
+      url: string;
+    };
+  }[];
+  generation: {
+    name: string;
+    url: string;
+  };
+  id: number;
+  is_main_series: boolean;
+  name: string;
+  names: {
+    language: {
+      name: string;
+      url: string;
+    };
+    name: string;
+  }[];
+  pokemon: {
+    is_hidden: boolean;
+    pokemon: {
+      name: string;
+      url: string;
+    };
+    slot: number;
+  }[];
+};
+
+export type formatPokemonDetailsProps = PokeApiPokemon & {
+  abilitiesDetails: PokeApiAbility[];
 };

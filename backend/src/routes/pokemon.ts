@@ -1,9 +1,10 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
 import apicache from 'apicache';
 import {
   handleValidationErrors,
   validateAllowedParams,
   validatePokemon,
+  validatePokemonByName,
   validatePokemonSearch,
 } from '../middlewares/validator';
 import pokemonController from '../controllers/pokemon';
@@ -36,12 +37,13 @@ router.get(
 );
 
 // Get Pokémon types
-router.get('/types', cache('12 hours'), handleValidationErrors, pokemonController.getPokemonTypes);
+router.get('/types', cache('12 hours'), pokemonController.getPokemonTypes);
 
-// TODO: Get Pokémon by id
-router.get('/name/:name', (req: Request, res: Response) => {
-  const { name } = req.params;
-  res.send(`Get Pokémon with ID: ${name}`);
-});
+router.get(
+  '/name/:name',
+  cache('12 hours'),
+  validatePokemonByName,
+  pokemonController.getPokemonByName
+);
 
 export default router;

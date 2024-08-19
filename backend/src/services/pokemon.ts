@@ -5,9 +5,11 @@ import {
   PokeApiTypes,
   PokemonUrlList,
   getPokemonNamesProps,
+  PokeApiAbility,
 } from '../types/types';
 import {
   formatPokemonData,
+  formatPokemonDetails,
   formatPokemonNames,
   formatPokemonTypes,
 } from '../utils/formatters';
@@ -111,4 +113,21 @@ const getPokemonTypes = async () => {
   return formatPokemonTypes(typesData.results);
 };
 
-export default { getAllpokemon, getPokemonNames, getPokemonTypes };
+const getPokemonByName = async (name: string) => {
+  const pokemonData = (await axiosInstance.get<PokeApiPokemon>(`/pokemon/${name}`)).data;
+  const abilities = pokemonData.abilities.filter((abilityInfo) => !abilityInfo.is_hidden);
+
+  const abilitiesDetails = await Promise.all(
+    abilities.map(async (abilityInfo) => {
+      const abilityData = (await axiosInstance.get<PokeApiAbility>(abilityInfo.ability.url))
+        .data;
+      return abilityData;
+    })
+  );
+  return formatPokemonDetails({
+    ...pokemonData,
+    abilitiesDetails,
+  });
+};
+
+export default { getAllpokemon, getPokemonNames, getPokemonTypes, getPokemonByName };

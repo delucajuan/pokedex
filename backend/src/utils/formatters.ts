@@ -1,7 +1,14 @@
-import { PokeApiPokemon, Pokemon, PokemonList, TypesList } from '../types/types';
+import {
+  formatPokemonDetailsProps,
+  PokeApiPokemon,
+  Pokemon,
+  PokemonDetail,
+  PokemonList,
+  TypesList,
+} from '../types/types';
 
-const formatPokemonData = (pokemonDetails: PokeApiPokemon[]): Pokemon[] => {
-  return pokemonDetails.map((pokemon) => ({
+const formatPokemonData = (pokemonList: PokeApiPokemon[]): Pokemon[] =>
+  pokemonList.map((pokemon) => ({
     name: pokemon.name.replace(/-/g, ' '),
     image:
       pokemon.sprites.other.dream_world.front_default ||
@@ -14,14 +21,32 @@ const formatPokemonData = (pokemonDetails: PokeApiPokemon[]): Pokemon[] => {
       base: stat.base_stat,
     })),
   }));
-};
 
-const formatPokemonNames = (pokemonList: PokemonList) => {
-  return pokemonList.map((pokemon) => pokemon.name.replace(/-/g, ' '));
-};
+const formatPokemonDetails = (pokemon: formatPokemonDetailsProps): PokemonDetail => ({
+  name: pokemon.name.replace(/-/g, ' '),
+  image:
+    pokemon.sprites.other.dream_world.front_default ||
+    pokemon.sprites.other['official-artwork'].front_default ||
+    pokemon.sprites.front_default,
+  types: pokemon.types.map(({ type }) => type.name),
+  order: pokemon.order,
+  stats: pokemon.stats.map((stat) => ({
+    name: stat.stat.name.replace(/-/g, ' '),
+    base: stat.base_stat,
+  })),
+  height: pokemon.height,
+  weight: pokemon.weight,
+  abilities: pokemon.abilitiesDetails.map((ability) => ({
+    name: ability.name,
+    description:
+      ability.effect_entries.find((effect) => effect.language.name === 'en')?.effect || '',
+  })),
+});
 
-const formatPokemonTypes = (typesList: TypesList) => {
-  return typesList.map((type) => type.name.replace(/-/g, ' '));
-};
+const formatPokemonNames = (pokemonList: PokemonList) =>
+  pokemonList.map((pokemon) => pokemon.name.replace(/-/g, ' '));
 
-export { formatPokemonData, formatPokemonNames, formatPokemonTypes };
+const formatPokemonTypes = (typesList: TypesList) =>
+  typesList.map((type) => type.name.replace(/-/g, ' '));
+
+export { formatPokemonData, formatPokemonNames, formatPokemonTypes, formatPokemonDetails };

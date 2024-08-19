@@ -3,7 +3,7 @@ import { check, ValidationChain, validationResult } from 'express-validator';
 import { HttpError } from '../types/types';
 
 // Validation for allowed parameters
-export const validateAllowedParams = (allowedParams: string[]) => {
+const validateAllowedParams = (allowedParams: string[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const keys = Object.keys(req.query);
     const invalidParams = keys.filter((key) => !allowedParams.includes(key));
@@ -22,7 +22,7 @@ export const validateAllowedParams = (allowedParams: string[]) => {
 };
 
 // Validation for /pokemon
-export const validatePokemon: ValidationChain[] = [
+const validatePokemon: ValidationChain[] = [
   check('limit')
     .optional()
     .isInt({ min: 1, max: 100 })
@@ -33,7 +33,7 @@ export const validatePokemon: ValidationChain[] = [
 ];
 
 // Validation for /pokemon/search
-export const validatePokemonSearch: ValidationChain[] = [
+const validatePokemonSearch: ValidationChain[] = [
   check('search').notEmpty().withMessage('Search is required'),
   check('limit')
     .optional()
@@ -41,7 +41,7 @@ export const validatePokemonSearch: ValidationChain[] = [
     .withMessage('Limit must be an integer between 1 and 100'),
 ];
 
-export const handleValidationErrors = (req: Request, _res: Response, next: NextFunction) => {
+const handleValidationErrors = (req: Request, _res: Response, next: NextFunction) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const error: HttpError = new Error('Invalid parameters');
@@ -51,4 +51,22 @@ export const handleValidationErrors = (req: Request, _res: Response, next: NextF
     return next(error);
   }
   next();
+};
+
+// Validation for /pokemon/name/:name
+const validatePokemonByName = (req: Request, res: Response, next: NextFunction) => {
+  const { name } = req.params;
+  if (!name || name.trim() === '') {
+    return res.status(400).json({ error: 'Name parameter is required' });
+  }
+
+  next();
+};
+
+export {
+  validateAllowedParams,
+  validatePokemon,
+  validatePokemonSearch,
+  handleValidationErrors,
+  validatePokemonByName,
 };

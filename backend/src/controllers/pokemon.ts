@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import pokemonService from '../services/pokemon';
 import { HttpError } from '../types/types';
+import { AxiosError } from 'axios';
 
 const getAllPokemon = async (req: Request, res: Response, next: NextFunction) => {
   const page = parseInt(req.query.page as string, 10) || 1;
@@ -22,7 +23,7 @@ const getAllPokemon = async (req: Request, res: Response, next: NextFunction) =>
     if (page > pages) {
       const err: HttpError = new Error('Page out of bounds');
       err.status = 400;
-      throw err;
+      return next(err);
     }
 
     // Format response
@@ -63,11 +64,27 @@ const getPokemonNames = async (req: Request, res: Response, next: NextFunction) 
 const getPokemonTypes = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const pokemonTypes = await pokemonService.getPokemonTypes();
-
     res.json(pokemonTypes);
   } catch (err) {
     next(err);
   }
 };
 
-export default { getAllPokemon, getPokemonNames, getPokemonTypes };
+const getPokemonByName = async (req: Request, res: Response, next: NextFunction) => {
+  const { name } = req.params;
+  try {
+    const pokemonData = await pokemonService.getPokemonByName(name);
+    res.json(pokemonData);
+  } catch (err) {
+    const error = err as AxiosError; // Assert err as AxiosError
+
+    if (error.response?.status === 404) {
+      const notFoundError: HttpError = new Error('Pokémon not found');
+      notFoundError.status = 404;
+      return next(notFoundError);
+    }
+    next(error);
+  }
+};
+
+export default { getAllPokemon, getPokemonNames, getPokemonTypes, getPokemonByName };

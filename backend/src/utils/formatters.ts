@@ -1,4 +1,5 @@
 import {
+  EvolutionChainLink,
   formatPokemonDetailsProps,
   PokeApiPokemon,
   Pokemon,
@@ -22,6 +23,26 @@ const formatPokemonData = (pokemonList: PokeApiPokemon[]): Pokemon[] =>
     })),
   }));
 
+const extractEvolutionChain = (chainLink: EvolutionChainLink): string[] => {
+  const evolutionNames: string[] = [];
+
+  let currentLink: EvolutionChainLink | null = chainLink;
+
+  // Traverse the chain, adding each species name to the array
+  while (currentLink) {
+    evolutionNames.push(currentLink.species.name.replace(/-/g, ' '));
+
+    // Move to the next link in the evolution chain
+    if (currentLink.evolves_to.length > 0) {
+      currentLink = currentLink.evolves_to[0];
+    } else {
+      currentLink = null;
+    }
+  }
+
+  return evolutionNames;
+};
+
 const formatPokemonDetails = (pokemon: formatPokemonDetailsProps): PokemonDetail => ({
   name: pokemon.name.replace(/-/g, ' '),
   image:
@@ -41,6 +62,9 @@ const formatPokemonDetails = (pokemon: formatPokemonDetailsProps): PokemonDetail
     description:
       ability.effect_entries.find((effect) => effect.language.name === 'en')?.effect || '',
   })),
+  evolutionChain: pokemon.evolutionChain
+    ? extractEvolutionChain(pokemon.evolutionChain.chain)
+    : [],
 });
 
 const formatPokemonNames = (pokemonList: PokemonList) =>

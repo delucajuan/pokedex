@@ -1,5 +1,5 @@
-import { PokeApiPokemonList, PokemonUrlList } from "../types/types";
-import axiosInstance from "../config/axiosConfig";
+import { PokeApiPokemonList, PokemonUrlList } from '../types/types';
+import axiosInstance from '../config/axiosConfig';
 
 let pokemonCache: PokemonUrlList = [];
 
@@ -18,12 +18,12 @@ const loadPokemonCache = async () => {
         url: pokemon.url,
       }));
       allPokemon.push(...pageData);
-      nextUrl = response.data.next || "";
+      nextUrl = response.data.next || '';
     }
     pokemonCache = allPokemon;
-    console.log("💾 | Cache loaded:", pokemonCache.length, "Pokémon");
+    console.log('💾 Cache loaded:', pokemonCache.length, 'Pokémon');
   } catch (error) {
-    console.error("Failed to load Pokémon cache", error);
+    console.error('Failed to load Pokémon cache', error);
   }
 };
 

@@ -44,6 +44,7 @@ export type PokemonDetail = Pokemon & {
     name: string;
     description: string;
   }[];
+  evolutionChain: string[];
 };
 
 /* PokeApi responses */
@@ -329,4 +330,72 @@ export type PokeApiAbility = {
 
 export type formatPokemonDetailsProps = PokeApiPokemon & {
   abilitiesDetails: PokeApiAbility[];
+  evolutionChain?: EvolutionChain;
+};
+
+export type EvolutionChain = {
+  baby_trigger_item: null | {
+    name: string;
+    url: string;
+  };
+  chain: EvolutionChainLink;
+  id: number;
+};
+
+export type EvolutionChainLink = {
+  evolution_details: EvolutionDetail[];
+  evolves_to: EvolutionChainLink[];
+  is_baby: boolean;
+  species: {
+    name: string;
+    url: string;
+  };
+};
+
+export type EvolutionDetail = {
+  gender: null | number;
+  held_item: null | {
+    name: string;
+    url: string;
+  };
+  item: null | {
+    name: string;
+    url: string;
+  };
+  known_move: null | {
+    name: string;
+    url: string;
+  };
+  known_move_type: null | {
+    name: string;
+    url: string;
+  };
+  location: null | {
+    name: string;
+    url: string;
+  };
+  min_affection: null | number;
+  min_beauty: null | number;
+  min_happiness: null | number;
+  min_level: null | number;
+  needs_overworld_rain: boolean;
+  party_species: null | {
+    name: string;
+    url: string;
+  };
+  party_type: null | {
+    name: string;
+    url: string;
+  };
+  relative_physical_stats: null | number;
+  time_of_day: string;
+  trade_species: null | {
+    name: string;
+    url: string;
+  };
+  trigger: {
+    name: string;
+    url: string;
+  };
+  turn_upside_down: boolean;
 };

@@ -76,7 +76,7 @@ const getPokemonByName = async (req: Request, res: Response, next: NextFunction)
     const pokemonData = await pokemonService.getPokemonByName(name);
     res.json(pokemonData);
   } catch (err) {
-    const error = err as AxiosError; // Assert err as AxiosError
+    const error = err as AxiosError;
 
     if (error.response?.status === 404) {
       const notFoundError: HttpError = new Error('Pokémon not found');

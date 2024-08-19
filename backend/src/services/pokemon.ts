@@ -6,6 +6,7 @@ import {
   PokemonUrlList,
   getPokemonNamesProps,
   PokeApiAbility,
+  EvolutionChain,
 } from '../types/types';
 import {
   formatPokemonData,
@@ -17,6 +18,7 @@ import { handleAxiosError } from '../utils/errorHandler';
 import axiosInstance from '../config/axiosConfig';
 import { getPokemonCache, loadPokemonCache } from '../utils/cache';
 import { filterAndSortPokemon } from '../utils/filters';
+import { AxiosError } from 'axios';
 
 const getAllpokemon = async ({ page, limit, type, name }: GetAllPokemonProps) => {
   const offset = (page - 1) * limit;
@@ -114,9 +116,14 @@ const getPokemonTypes = async () => {
 };
 
 const getPokemonByName = async (name: string) => {
-  const pokemonData = (await axiosInstance.get<PokeApiPokemon>(`/pokemon/${name}`)).data;
+  const formattedName = name.toLowerCase().replace(/\s+/g, '-');
+  // Get the basic Pokémon data
+  const pokemonData = (await axiosInstance.get<PokeApiPokemon>(`/pokemon/${formattedName}`))
+    .data;
+
   const abilities = pokemonData.abilities.filter((abilityInfo) => !abilityInfo.is_hidden);
 
+  // Get details for the abilities
   const abilitiesDetails = await Promise.all(
     abilities.map(async (abilityInfo) => {
       const abilityData = (await axiosInstance.get<PokeApiAbility>(abilityInfo.ability.url))
@@ -124,9 +131,31 @@ const getPokemonByName = async (name: string) => {
       return abilityData;
     })
   );
+
+  let evolutionChain;
+  try {
+    // Fetch the species data to get the evolution chain URL
+    const speciesData = (
+      await axiosInstance.get<{ evolution_chain: { url: string } }>(
+        `/pokemon-species/${formattedName}/`
+      )
+    ).data;
+
+    // Get the evolution chain using the URL from the species data
+    evolutionChain = (await axiosInstance.get<EvolutionChain>(speciesData.evolution_chain.url))
+      .data;
+  } catch (err) {
+    // Do not throw error if not evolution data for current Pókemon
+    const error = err as AxiosError;
+    if (error.response?.status !== 404) {
+      throw error;
+    }
+  }
+
   return formatPokemonDetails({
     ...pokemonData,
     abilitiesDetails,
+    evolutionChain,
   });
 };
 

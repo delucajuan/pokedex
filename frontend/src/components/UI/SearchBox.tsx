@@ -6,6 +6,8 @@ import { Autocomplete, TextField } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
 import usePokemonNames from '@/hooks/usePokemonNames';
 
+const MAX_SEARCH_LENGTH = 50;
+
 // Styled search component
 const Search = styled('form')(({ theme }) => ({
   position: 'relative',
@@ -19,9 +21,12 @@ const Search = styled('form')(({ theme }) => ({
 }));
 
 function SearchBox() {
-  const [searchValue, setSearchValue] = useState(''); // Search input value
-  const [debouncedSearchValue, setDebouncedSearchValue] = useState(searchValue); // Debounced search value
-  const [searchResult, setSearchResult] = useState<string[]>([]); // Autocomplete names options
+  // Search input value
+  const [searchValue, setSearchValue] = useState('');
+  // Debounced search value
+  const [debouncedSearchValue, setDebouncedSearchValue] = useState(searchValue);
+  // Autocomplete names options
+  const [searchResult, setSearchResult] = useState<string[]>([]);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -31,7 +36,6 @@ function SearchBox() {
     limit: 6,
     searchValue: debouncedSearchValue,
   });
-  const MAX_SEARCH_LENGTH = 50;
 
   // Update search value based on URL search parameters
   useEffect(() => {
@@ -41,7 +45,7 @@ function SearchBox() {
       setSearchValue('');
       setSearchResult([]);
     }
-  }, [name]);
+  }, [name, searchParams]);
 
   // Update search results when autocomplete data changes
   useEffect(() => {

@@ -5,35 +5,42 @@ import StatsRating from '@/components/Pokemon/StatsRating';
 import TypesChips from '@/components/Pokemon/TypesChips';
 import usePokemonDetails from '@/hooks/usePokemonDetails';
 import { formatPokemonName } from '@/utils/textFormatters';
-import {
-  Box,
-  Grid,
-  Paper,
-  Skeleton,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, Grid, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useParams } from 'next/navigation';
 import Evolutions from '@/components/Pokemon/Evolutions';
 import { usePageTitle } from '@/hooks/usePageTitle';
+import PokemonDetailsSkeleton from '@/components/Pokemon/Skeletons/PokemonDetailsSkeleton';
 
 function PokemonDetails() {
   const params = useParams();
   const nameParam = Array.isArray(params.name) ? params.name[0] : params.name;
   const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.only('xs'));
-
   const { data: pokemon, isLoading, error } = usePokemonDetails(nameParam);
-  usePageTitle(formatPokemonName(nameParam));
+
+  // Add Pokémon name to page title
+  const pageTitle = pokemon ? formatPokemonName(pokemon.name) : '';
+  usePageTitle(pageTitle);
 
   if (isLoading) {
-    return;
+    return <PokemonDetailsSkeleton />;
   }
   if (error || !pokemon) {
     return <Error errorType={error.status === 404 ? 'notFound' : 'server'} />;
   }
-  const { name, image, types, order, stats, evolutionChain } = pokemon;
+  const {
+    name,
+    image,
+    types,
+    order,
+    stats,
+    height,
+    weight,
+    baseExperience,
+    abilities,
+    evolutionChain,
+  } = pokemon;
+  const renderCharacteristics = height || weight || baseExperience || abilities[0].name;
 
   return (
     <Paper sx={{ borderRadius: '10px', marginY: 2, padding: 2 }}>
@@ -60,6 +67,7 @@ function PokemonDetails() {
             {formatPokemonName(name)}
           </Typography>
         </Grid>
+        {/* Types chips */}
         <Box justifyContent="center" width={244} paddingY={1}>
           <TypesChips types={types} justifyContent="center" />
         </Box>
@@ -74,23 +82,15 @@ function PokemonDetails() {
             justifyContent="center"
             alignContent="flex-start"
           >
-            {isLoading ? (
-              <Skeleton
-                variant="rounded"
-                sx={{ height: { xs: '200px', sm: '468px' } }}
-                width="100%"
-              />
-            ) : (
-              <Box
-                component="img"
-                src={image || '/images/fallbackPokemon.webp'}
-                width="100%"
-                sx={{
-                  maxHeight: { xs: 350, md: 450 },
-                  objectFit: 'contain',
-                }}
-              />
-            )}
+            <Box
+              component="img"
+              src={image || '/images/fallbackPokemon.webp'}
+              width="100%"
+              sx={{
+                maxHeight: { xs: 350, md: 450 },
+                objectFit: 'contain',
+              }}
+            />
           </Grid>
           <Grid
             item
@@ -108,10 +108,12 @@ function PokemonDetails() {
               <StatsRating stats={stats} size={isXs ? 1.1 : 1.2} />
             </Grid>
             {/* Other characteristics */}
-            <Grid item container justifyContent="center">
-              <Typography variant="h5">Characteristics</Typography>
-              <SpecsList pokemon={pokemon} />
-            </Grid>
+            {renderCharacteristics && (
+              <Grid item container justifyContent="center">
+                <Typography variant="h5">Characteristics</Typography>
+                <SpecsList pokemon={pokemon} />
+              </Grid>
+            )}
           </Grid>
         </Grid>
         {evolutionChain?.length > 1 && <Evolutions pokemon={pokemon} />}

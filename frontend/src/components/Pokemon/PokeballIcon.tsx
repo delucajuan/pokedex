@@ -1,6 +1,5 @@
 'use client';
 import { useTheme } from '@mui/material';
-import * as React from 'react';
 import { SVGProps } from 'react';
 
 type PokeballIconProps = SVGProps<SVGSVGElement> & {

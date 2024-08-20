@@ -9,14 +9,54 @@ import Link from 'next/link';
 
 function Evolutions({ pokemon }: EvolutionsProps) {
   const { data: evolutionData, isLoading, error } = useEvolutionChain(pokemon?.evolutionChain);
+  const EVOLUTIONS_SKELETONS = 3;
 
   if (error) {
     return null;
   }
 
-  if (isLoading) {
-    return <Skeleton variant="circular" height={150} width={150} />;
+  if (isLoading || !pokemon) {
+    // Render Skeletons
+    return (
+      <Grid container item justifyContent="center" width="100% ">
+        <Skeleton>
+          <Typography variant="h5" gutterBottom>
+            Evolutions
+          </Typography>
+        </Skeleton>
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          spacing={2}
+          width="100%"
+          justifyContent="center"
+          alignItems="center"
+          paddingY={2}
+        >
+          {[...Array(EVOLUTIONS_SKELETONS)].map((_, index) => (
+            <Fragment key={index}>
+              <Stack justifyContent="space-between" height={150}>
+                <Skeleton variant="circular" height={118} width={118} />
+                <Box display="flex" justifyContent="center">
+                  <Skeleton>
+                    <Typography>Bulbasaur</Typography>
+                  </Skeleton>
+                </Box>
+              </Stack>
+              {index !== EVOLUTIONS_SKELETONS - 1 && (
+                <Skeleton>
+                  <ArrowForwardIcon
+                    sx={{ fontSize: '3rem', rotate: { xs: '90deg', sm: 'unset' } }}
+                  />
+                </Skeleton>
+              )}
+            </Fragment>
+          ))}
+        </Stack>
+      </Grid>
+    );
   }
+
+  // Render Evolutions
   return (
     <Grid container item justifyContent="center" width="100% ">
       <Typography variant="h5" gutterBottom>

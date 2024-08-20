@@ -4,6 +4,3 @@ html {
 body {
   min-width: 320px;
 }
-.contain {
-  object-fit: contain !important;
-}

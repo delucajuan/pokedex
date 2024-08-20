@@ -1,12 +1,12 @@
 'use client';
 import CustomPagination from '@/components/Layout/Pagination';
-import PokemonCard from '@/components/Pokemon/PokemonCard';
-import PokemonCardSkeleton from '@/components/Pokemon/PokemonCardSkeleton';
 import TypesMenu from '@/components/UI/TypesMenu';
 import useAllPokemon from '@/hooks/useAllPokemon';
 import { Box, Grid, Stack } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
 import Error from '@/components/Error';
+import PokemonCard from '@/components/Pokemon/PokemonCard';
+import PokemonCardSkeleton from '@/components/Pokemon/Skeletons/PokemonCardSkeleton';
 
 function Home() {
   const searchParams = useSearchParams();
@@ -31,7 +31,7 @@ function Home() {
           [...Array(12)].map((_, index) => <PokemonCardSkeleton key={index} />)
         ) : pokemonData?.data.length ? (
           // Pokemon data
-          pokemonData?.data.map((pokemon) => (
+          pokemonData.data.map((pokemon) => (
             <PokemonCard pokemon={pokemon} key={pokemon.name} />
           ))
         ) : (

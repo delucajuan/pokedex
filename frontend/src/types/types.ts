@@ -72,20 +72,20 @@ export type ThemeContextType = {
 export type TypesMenuOptions = PokemonType | 'all';
 
 export type TypesChipsProps = StackProps & {
-  types: PokemonType[];
+  types?: PokemonType[];
 };
 
 export type SpecsListProps = ListProps & {
-  pokemon: PokemonDetail;
+  pokemon?: PokemonDetail;
 };
 
 export type StatsRatingProps = StackProps & {
-  stats: Stat[];
+  stats?: Stat[];
   size?: number;
 };
 
 export type EvolutionsProps = {
-  pokemon: PokemonDetail;
+  pokemon?: PokemonDetail;
 };
 
 export type FetchError = Error & {

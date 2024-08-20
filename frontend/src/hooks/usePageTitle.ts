@@ -2,6 +2,10 @@ import { useEffect } from 'react';
 
 export const usePageTitle = (pageTitle: string) => {
   useEffect(() => {
-    document.title = `${pageTitle} | Pokédex`;
+    if (pageTitle) {
+      document.title = `${pageTitle} | Pokédex`;
+    } else {
+      document.title = 'Pokédex';
+    }
   }, [pageTitle]);
 };

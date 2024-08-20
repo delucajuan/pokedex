@@ -1,7 +1,7 @@
 import { AppBar, Box, Container, Toolbar } from '@mui/material';
 import Link from 'next/link';
-import ToggleThemeButton from './ToggleThemeButton';
-import SearchBox from './SearchBox';
+import ToggleThemeButton from '../UI/ToggleThemeButton';
+import SearchBox from '../UI/SearchBox';
 
 function Header() {
   return (

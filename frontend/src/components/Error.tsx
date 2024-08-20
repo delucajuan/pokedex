@@ -6,8 +6,7 @@ import Link from 'next/link';
 function Error({ errorType }: { errorType: 'server' | 'notFound' | 'notResults' }) {
   const messages = {
     server: 'Server error. Please try again later.',
-    notResults:
-      'No Pokémon matched your search. Please check your spelling or try different keywords.',
+    notResults: 'No Pokémon matched your search.',
     notFound: `Sorry, the page you’re looking for doesn’t exist.`,
   };
 
@@ -39,7 +38,7 @@ function Error({ errorType }: { errorType: 'server' | 'notFound' | 'notResults' 
         </Button>
       ) : (
         <Link href="/">
-          <Button variant="contained">Home</Button>
+          <Button variant="contained">All Pokémon</Button>
         </Link>
       )}
     </Box>

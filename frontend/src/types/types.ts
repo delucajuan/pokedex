@@ -1,4 +1,4 @@
-import { PaletteMode } from '@mui/material';
+import { ListProps, PaletteMode, StackProps } from '@mui/material';
 
 export type PokemonType =
   | 'normal'
@@ -28,19 +28,23 @@ export type Pokemon = {
   image: string;
   types: PokemonType[];
   order: number;
-  stats: {
-    name: string;
-    base: number;
-  }[];
+  stats: Stat[];
+};
+
+export type Stat = {
+  name: string;
+  base: number;
 };
 
 export type PokemonDetail = Pokemon & {
   height: number;
   weight: number;
+  baseExperience: number;
   abilities: {
     name: string;
     description: string;
   }[];
+  evolutionChain: string[];
 };
 
 export type Metadata = {
@@ -66,3 +70,25 @@ export type ThemeContextType = {
 };
 
 export type TypesMenuOptions = PokemonType | 'all';
+
+export type TypesChipsProps = StackProps & {
+  types: PokemonType[];
+};
+
+export type SpecsListProps = ListProps & {
+  pokemon: PokemonDetail;
+};
+
+export type StatsRatingProps = StackProps & {
+  stats: Stat[];
+  size?: number;
+};
+
+export type EvolutionsProps = {
+  pokemon: PokemonDetail;
+};
+
+export type FetchError = Error & {
+  status?: number;
+  statusText?: string;
+};

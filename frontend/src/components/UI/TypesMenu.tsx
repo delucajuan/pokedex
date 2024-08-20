@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Button, Menu, MenuItem, Skeleton, Stack, Typography } from '@mui/material';
 import usePokemonTypes from '@/hooks/usePokemonTypes';
@@ -10,12 +10,17 @@ import { useRouter, useSearchParams } from 'next/navigation';
 export default function TypesMenu() {
   const router = useRouter();
   const searchParams = useSearchParams();
-
-  // Get type from url params
   const typeParam = searchParams.get('type');
 
   // Set selected type as url param or 'all'
   const [selectedType, setSelectedType] = useState(typeParam || 'all');
+
+  // Update selectedType when typeParam changes
+  useEffect(() => {
+    if (typeParam !== selectedType) {
+      setSelectedType(typeParam || 'all');
+    }
+  }, [selectedType, typeParam]);
 
   // Fetch Pokemón types
   const { data: typesData, isLoading } = usePokemonTypes();
@@ -41,10 +46,10 @@ export default function TypesMenu() {
       // If the selected type is 'all', remove the 'type' parameter
       params.delete('type');
     } else {
-      // Otherwise, set the 'type' parameter
+      // Otherwise, set the 'type' parameter and remove 'page'
       params.set('type', type.toString());
+      params.delete('page');
     }
-
     router.push(`?${params}`);
     handleClose();
   };

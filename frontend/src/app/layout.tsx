@@ -3,7 +3,7 @@ import './globals.css';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { Container, CssBaseline } from '@mui/material';
 import { ThemeContextProvider } from '../context/ThemeContext';
-import Header from '../components/Header';
+import Header from '../components/Layout/Header';
 
 export const metadata: Metadata = {
   title: 'Pokédex',

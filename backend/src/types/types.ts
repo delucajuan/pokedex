@@ -38,13 +38,14 @@ export type Pokemon = {
 };
 
 export type PokemonDetail = Pokemon & {
-  height: number;
-  weight: number;
+  height: number | null;
+  weight: number | null;
+  baseExperience: number | null;
   abilities: {
-    name: string;
-    description: string;
+    name: string | null;
+    description: string | null;
   }[];
-  evolutionChain: string[];
+  evolutionChain: string[] | null;
 };
 
 /* PokeApi responses */
@@ -65,11 +66,11 @@ export type PokeApiPokemonList = PokeApiPaginated & {
 export type PokeApiPokemon = {
   id: number;
   name: string;
-  base_experience: number;
-  height: number;
+  base_experience: number | null;
+  height: number | null;
   is_default: boolean;
   order: number;
-  weight: number;
+  weight: number | null;
   abilities: Ability[];
   forms: Resource[];
   game_indices: GameIndex[];
@@ -82,7 +83,7 @@ export type PokeApiPokemon = {
   types: PokemonType[];
   past_types: PastType[];
   cries: Cries;
-  abilitiesDetails: PokeApiAbility[];
+  abilitiesDetails?: PokeApiAbility[];
 };
 
 export type Ability = {

@@ -3,7 +3,7 @@ import axiosInstance from '../config/axiosConfig';
 
 let pokemonCache: PokemonUrlList = [];
 
-// Cache for storing Pokemon names and urls
+// Cache for storing Pokémon names and urls
 const loadPokemonCache = async () => {
   try {
     let url = `/pokemon?limit=100&offset=0`;
@@ -21,7 +21,7 @@ const loadPokemonCache = async () => {
       nextUrl = response.data.next || '';
     }
     pokemonCache = allPokemon;
-    console.log('💾 Cache loaded:', pokemonCache.length, 'Pokémon');
+    console.log('Cache loaded:', pokemonCache.length, 'Pokémon');
   } catch (error) {
     console.error('Failed to load Pokémon cache', error);
   }

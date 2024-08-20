@@ -20,6 +20,6 @@
     /* Completeness */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
-  "include": ["src/**/*", "tests/**/*"],
+  "include": ["src/**/*", "tests/**/*", "src/config/swagger.ts"],
   "exclude": ["node_modules"]
 }

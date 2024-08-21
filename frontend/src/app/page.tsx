@@ -30,7 +30,7 @@ function Home() {
           // Loading skeleton
           [...Array(12)].map((_, index) => <PokemonCardSkeleton key={index} />)
         ) : pokemonData?.data.length ? (
-          // Pokemon data
+          // Pokémon data
           pokemonData.data.map((pokemon) => (
             <PokemonCard pokemon={pokemon} key={pokemon.name} />
           ))

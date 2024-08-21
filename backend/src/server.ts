@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import express, { Request, Response, NextFunction } from 'express';
-import morgan from 'morgan';
 import cors from 'cors';
 import errorsMiddleware from './middlewares/errors';
 import routes from './routes';
@@ -9,12 +8,8 @@ import { HttpError } from './types/types';
 import { loadPokemonCache } from './utils/cache';
 import setupSwaggerDocs from './config/swagger';
 
-const app = express();
 const PORT = process.env.PORT || 5001;
-
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
-}
+const app = express();
 app.use(cors());
 
 // Load Pokémon cache at server startup

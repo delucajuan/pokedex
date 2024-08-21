@@ -11,7 +11,7 @@
 
 ## Description
 
-This project is a responsive Pokédex web application designed for exploring all existing Pokémon and their characteristics. It is built with React and Next.js on the frontend, while the backend uses Node.js with Express, functioning as a Backend For Frontend (BFF) by consuming data from the official Pokémon API.
+This project is a responsive Pokédex web application designed for exploring all existing Pokémon and their characteristics. It is built with React and Next.js on the frontend, while the backend uses Node.js with Express, functioning as a Backend For Frontend (BFF) by consuming data from the official [Pokémon API](https://pokeapi.co/).
 
 ## Features
 

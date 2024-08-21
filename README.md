@@ -7,7 +7,7 @@
 - [Technologies Used](#technologies-used)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
-- [Folder Structure](#folder-structure)
+- [Author](#author)
 
 ## Description
 

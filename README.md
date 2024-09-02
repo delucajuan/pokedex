@@ -29,7 +29,7 @@ This project is a responsive Pokédex web application designed for exploring all
 
 ## Prerequisites
 
-- Ensure that Docker is installed and running on your system. You can download Docker from the [official Docker website](https://www.docker.com/products/docker-desktop) or follow the installation instructions in the [Docker documentation](https://docs.docker.com/get-docker/).
+Ensure that Docker is installed and running on your system. You can download Docker from the [official Docker website](https://www.docker.com/products/docker-desktop) or follow the installation instructions in the [Docker documentation](https://docs.docker.com/get-docker/).
 
 ## Installation
 

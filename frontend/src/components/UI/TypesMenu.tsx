@@ -46,10 +46,11 @@ export default function TypesMenu() {
       // If the selected type is 'all', remove the 'type' parameter
       params.delete('type');
     } else {
-      // Otherwise, set the 'type' parameter and remove 'page'
+      // Otherwise, set the 'type' parameter
       params.set('type', type.toString());
-      params.delete('page');
     }
+    // Remove page parameter on type change
+    params.delete('page');
     router.push(`?${params}`);
     handleClose();
   };

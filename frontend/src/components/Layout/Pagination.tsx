@@ -17,7 +17,6 @@ function CustomPagination({ totalPages, currentPage }: CustomPaginationProps) {
       color="primary"
       page={currentPage}
       onChange={handlePageChange}
-      sx={{ padding: 2 }}
     />
   );
 }

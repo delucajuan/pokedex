@@ -2,6 +2,8 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { Express } from 'express';
 
+const path = process.env.NODE_ENV === 'production' ? './dist/routes/*.js' : './src/routes/*.ts';
+
 const options = {
   definition: {
     openapi: '3.0.0',
@@ -193,7 +195,7 @@ const options = {
       },
     },
   },
-  apis: ['./src/routes/*.ts'],
+  apis: [path],
 };
 
 const swaggerSpec = swaggerJSDoc(options);

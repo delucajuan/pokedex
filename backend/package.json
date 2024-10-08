@@ -37,8 +37,5 @@
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.1.0"
-  },
-  "prettier": {
-    "printWidth": 100
   }
 }

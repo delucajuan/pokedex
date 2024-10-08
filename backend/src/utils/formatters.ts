@@ -23,7 +23,10 @@ const formatPokemonData = (pokemonList: PokeApiPokemon[]): Pokemon[] =>
     })),
   }));
 
-const extractEvolutionChain = (chainLink: EvolutionChainLink): string[] => {
+const extractEvolutionChain = (
+  chainLink: EvolutionChainLink,
+  currentPokemonName: string
+): string[] => {
   const evolutionNames: string[] = [];
 
   let currentLink: EvolutionChainLink | null = chainLink;
@@ -32,9 +35,15 @@ const extractEvolutionChain = (chainLink: EvolutionChainLink): string[] => {
   while (currentLink) {
     evolutionNames.push(currentLink.species.name.replace(/-/g, ' '));
 
-    // Move to the next link in the evolution chain
+    // Traverse the chain, adding each species name to the array
     if (currentLink.evolves_to.length > 0) {
-      currentLink = currentLink.evolves_to[0];
+      // If there are multiple possible evolutions, find the one matching currentPokemonName
+      const matchingEvolution: EvolutionChainLink | undefined = currentLink.evolves_to.find(
+        (evolution) => evolution.species.name === currentPokemonName
+      );
+
+      // If a matching evolution is found, move to that; otherwise, take the first evolution
+      currentLink = matchingEvolution || currentLink.evolves_to[0];
     } else {
       currentLink = null;
     }
@@ -64,7 +73,7 @@ const formatPokemonDetails = (pokemon: formatPokemonDetailsProps): PokemonDetail
       ability.effect_entries.find((effect) => effect.language.name === 'en')?.effect || '',
   })),
   evolutionChain: pokemon.evolutionChain
-    ? extractEvolutionChain(pokemon.evolutionChain.chain)
+    ? extractEvolutionChain(pokemon.evolutionChain.chain, pokemon.name)
     : [],
 });
 

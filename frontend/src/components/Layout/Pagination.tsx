@@ -21,6 +21,7 @@ function CustomPagination({ totalPages, currentPage }: CustomPaginationProps) {
       size={isXxs ? 'small' : 'medium'}
       page={currentPage}
       onChange={handlePageChange}
+      sx={{ paddingY: 2 }}
     />
   );
 }

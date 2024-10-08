@@ -4,7 +4,7 @@ import { useMediaQuery } from '@mui/material';
 import Pagination from '@mui/material/Pagination';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-function CustomPagination({ totalPages, currentPage }: CustomPaginationProps) {
+function CustomPagination({ totalPages, currentPage, sx }: CustomPaginationProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isXxs = useMediaQuery('(max-width: 395px)');
@@ -21,7 +21,7 @@ function CustomPagination({ totalPages, currentPage }: CustomPaginationProps) {
       size={isXxs ? 'small' : 'medium'}
       page={currentPage}
       onChange={handlePageChange}
-      sx={{ paddingY: 2 }}
+      sx={{ paddingY: 2, ...sx }}
     />
   );
 }

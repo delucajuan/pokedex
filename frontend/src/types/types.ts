@@ -1,4 +1,4 @@
-import { ListProps, PaletteMode, StackProps } from '@mui/material';
+import { ListProps, PaletteMode, StackProps, SxProps } from '@mui/material';
 
 export type PokemonType =
   | 'normal'
@@ -62,6 +62,7 @@ export type AllPokemonResponse = {
 export type CustomPaginationProps = {
   totalPages: number;
   currentPage: number;
+  sx?: SxProps;
 };
 
 export type ThemeContextType = {

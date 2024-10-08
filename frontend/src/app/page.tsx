@@ -31,16 +31,20 @@ function Home() {
           [...Array(12)].map((_, index) => <PokemonCardSkeleton key={index} />)
         ) : pokemonData?.data.length ? (
           // Pokémon data
-          pokemonData.data.map((pokemon) => (
-            <PokemonCard pokemon={pokemon} key={pokemon.name} />
-          ))
+          pokemonData.data.map((pokemon) => <PokemonCard pokemon={pokemon} key={pokemon.name} />)
         ) : (
           // No results
           <Error errorType="notResults" />
         )}
       </Grid>
       <Box display="flex" justifyContent="center">
-        <CustomPagination currentPage={page} totalPages={pokemonData?.metadata.pages || 10} />
+        <CustomPagination
+          currentPage={page}
+          totalPages={pokemonData?.metadata.pages || 10}
+          sx={{
+            visibility: pokemonData?.data && pokemonData.data.length > 0 ? 'visible' : 'hidden',
+          }}
+        />
       </Box>
     </>
   );

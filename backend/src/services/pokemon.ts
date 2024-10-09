@@ -36,8 +36,7 @@ const getAllpokemon = async ({ page, limit, type, name }: GetAllPokemonProps) =>
     } else {
       // Filter by type
       if (type) {
-        const pokemonByType = (await axiosInstance.get<PokeApiTypes>(`/type/${type}`)).data
-          .pokemon;
+        const pokemonByType = (await axiosInstance.get<PokeApiTypes>(`/type/${type}`)).data.pokemon;
 
         if (!pokemonByType?.length) {
           return { data: [], total };
@@ -67,10 +66,7 @@ const getAllpokemon = async ({ page, limit, type, name }: GetAllPokemonProps) =>
         }
 
         // Filter and sort Pokémon by relevance
-        filteredPokemon = filterAndSortPokemon(
-          filteredPokemon,
-          formattedName
-        ) as PokemonUrlList;
+        filteredPokemon = filterAndSortPokemon(filteredPokemon, formattedName) as PokemonUrlList;
         total = filteredPokemon.length;
       }
       // Get current page data
@@ -103,31 +99,33 @@ const getPokemonNames = async ({ searchValue, limit }: getPokemonNamesProps) => 
   // Transform spaces in the search term to hyphens
   const formattedSearchValue = searchValue.toLowerCase().replace(/\s+/g, '-');
   // Filter and sort Pokémon by relevance
-  const filteredNames = filterAndSortPokemon(pokemonCache, formattedSearchValue).slice(
-    0,
-    limit
-  );
+  const filteredNames = filterAndSortPokemon(pokemonCache, formattedSearchValue).slice(0, limit);
   return formatPokemonNames(filteredNames);
 };
 
 const getPokemonTypes = async () => {
-  const typesData = (await axiosInstance.get<PokeApiPokemonList>(`/type?limit=100`)).data;
-  return formatPokemonTypes(typesData.results);
+  let nextUrl = `/type?limit=100`;
+  const allTypes: PokemonUrlList = [];
+
+  while (nextUrl) {
+    const typesData = (await axiosInstance.get<PokeApiPokemonList>(nextUrl)).data;
+    allTypes.push(...typesData.results);
+    nextUrl = typesData.next || '';
+  }
+  return formatPokemonTypes(allTypes);
 };
 
 const getPokemonByName = async (name: string) => {
   const formattedName = name.toLowerCase().replace(/\s+/g, '-');
   // Get the basic Pokémon data
-  const pokemonData = (await axiosInstance.get<PokeApiPokemon>(`/pokemon/${formattedName}`))
-    .data;
+  const pokemonData = (await axiosInstance.get<PokeApiPokemon>(`/pokemon/${formattedName}`)).data;
 
   const abilities = pokemonData.abilities.filter((abilityInfo) => !abilityInfo.is_hidden);
 
   // Get details for the abilities
   const abilitiesDetails = await Promise.all(
     abilities.map(async (abilityInfo) => {
-      const abilityData = (await axiosInstance.get<PokeApiAbility>(abilityInfo.ability.url))
-        .data;
+      const abilityData = (await axiosInstance.get<PokeApiAbility>(abilityInfo.ability.url)).data;
       return abilityData;
     })
   );

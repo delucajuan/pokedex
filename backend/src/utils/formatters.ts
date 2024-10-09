@@ -80,7 +80,12 @@ const formatPokemonDetails = (pokemon: formatPokemonDetailsProps): PokemonDetail
 const formatPokemonNames = (pokemonList: PokemonList) =>
   pokemonList.map((pokemon) => pokemon.name.replace(/-/g, ' '));
 
-const formatPokemonTypes = (typesList: TypesList) =>
-  typesList.map((type) => type.name.replace(/-/g, ' '));
+const formatPokemonTypes = (typesList: TypesList) => {
+  // Exlude types without Pokémon data
+  const excludedTypes = ['stellar', 'unknown', 'shadow'];
+  return typesList
+    .filter((type) => !excludedTypes.includes(type.name))
+    .map((type) => type.name.replace(/-/g, ' '));
+};
 
 export { formatPokemonData, formatPokemonNames, formatPokemonTypes, formatPokemonDetails };

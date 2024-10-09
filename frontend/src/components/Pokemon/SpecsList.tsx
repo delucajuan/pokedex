@@ -99,7 +99,9 @@ function SpecsList({ pokemon, ...listProps }: SpecsListProps) {
       )}
       {abilities?.length && abilities[0].name && (
         <>
-          <ListSubheader sx={{ backgroundColor: 'inherit' }}>Abilities</ListSubheader>
+          <ListSubheader disableSticky sx={{ backgroundColor: 'inherit' }}>
+            Abilities
+          </ListSubheader>
           {abilities.map((ability) => (
             <Fragment key={ability.name}>
               {ability.description ? (

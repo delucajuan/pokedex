@@ -71,10 +71,12 @@ export default function TypesMenu() {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleMenuOpen}
         variant="contained"
-        endIcon={<KeyboardArrowDownIcon />}
         sx={{ textTransform: 'none', minWidth: 110, paddingX: 1 }}
       >
-        <Typography>{capitalizeFirstLetter(selectedType)}</Typography>
+        <Stack direction="row" justifyContent="space-around" width="100%">
+          <Typography>{capitalizeFirstLetter(selectedType)}</Typography>
+          <KeyboardArrowDownIcon />
+        </Stack>
       </Button>
       <Menu
         anchorEl={anchorEl}
@@ -90,6 +92,7 @@ export default function TypesMenu() {
             selected={type === selectedType}
             key={type}
             onClick={() => handleTypeSelect(type as TypesMenuOptions)}
+            sx={{ minWidth: 110 }}
           >
             {capitalizeFirstLetter(type)}
           </MenuItem>

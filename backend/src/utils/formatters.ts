@@ -27,29 +27,47 @@ const extractEvolutionChain = (
   chainLink: EvolutionChainLink,
   currentPokemonName: string
 ): string[] => {
-  const evolutionNames: string[] = [];
+  const allPaths: string[][] = [];
+  const target = currentPokemonName.toLowerCase();
 
-  let currentLink: EvolutionChainLink | null = chainLink;
+  // Helper function to collect all possible evolution paths
+  const collectPaths = (link: EvolutionChainLink, currentPath: string[]): void => {
+    // Add the current species to the path
+    currentPath.push(link.species.name.replace(/-/g, ' '));
 
-  // Traverse the chain, adding each species name to the array
-  while (currentLink) {
-    evolutionNames.push(currentLink.species.name.replace(/-/g, ' '));
-
-    // Traverse the chain, adding each species name to the array
-    if (currentLink.evolves_to.length > 0) {
-      // If there are multiple possible evolutions, find the one matching currentPokemonName
-      const matchingEvolution: EvolutionChainLink | undefined = currentLink.evolves_to.find(
-        (evolution) => evolution.species.name === currentPokemonName
-      );
-
-      // If a matching evolution is found, move to that; otherwise, take the first evolution
-      currentLink = matchingEvolution || currentLink.evolves_to[0];
+    if (link.evolves_to.length === 0) {
+      // Leaf node, push the current path
+      allPaths.push([...currentPath]);
     } else {
-      currentLink = null;
+      // Traverse each evolution branch
+      for (const evolvesToLink of link.evolves_to) {
+        collectPaths(evolvesToLink, currentPath);
+      }
+    }
+
+    // Backtrack to explore other branches
+    currentPath.pop();
+  };
+
+  // Initiate the collection of all paths
+  collectPaths(chainLink, []);
+
+  // If the selected Pokémon is the base form, return the first path
+  if (chainLink.species.name.toLowerCase() === target) {
+    return allPaths.length > 0 ? allPaths[0] : [chainLink.species.name.replace(/-/g, ' ')];
+  }
+
+  // Otherwise, find the path that includes the selected Pokémon
+  for (const path of allPaths) {
+    const lowerCasePath = path.map((name) => name.toLowerCase());
+
+    if (lowerCasePath.includes(target)) {
+      // Return the entire evolution path that includes the target Pokémon
+      return path;
     }
   }
 
-  return evolutionNames;
+  return [];
 };
 
 const formatPokemonDetails = (pokemon: formatPokemonDetailsProps): PokemonDetail => ({
